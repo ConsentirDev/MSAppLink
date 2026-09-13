@@ -5,10 +5,12 @@
         "policy": {
           "enabled": true,
           "allowedOrigins": [
-            "https://workspace.example.gov.au"
+            "https://workspaces.grdc.com.au",
+            "https://workspaces.test.grdc.com.au",
+            "https://workspaces.dev.grdc.com.au"
           ],
           "allowedPathPrefixes": [
-            "/sites/workspaces/"
+            "/"
           ],
           "openMode": "edit",
           "resolveDocShareLinks": true,
