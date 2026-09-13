@@ -1,7 +1,9 @@
 {
-  "name": "Workspace SharePoint",
+  "name": "GRDC Workspaces SharePoint",
   "origins": [
-    "https://workspace.example.gov.au"
+    "https://workspaces.grdc.com.au",
+    "https://workspaces.test.grdc.com.au",
+    "https://workspaces.dev.grdc.com.au"
   ],
   "pathPrefixes": [
     "/"
