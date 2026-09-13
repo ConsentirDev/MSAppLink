@@ -5,19 +5,35 @@
   "AutoLaunchProtocolsFromOrigins": [
     {
       "protocol": "ms-word",
-      "allowed_origins": ["https://workspace.example.gov.au"]
+      "allowed_origins": [
+        "https://workspaces.grdc.com.au",
+        "https://workspaces.test.grdc.com.au",
+        "https://workspaces.dev.grdc.com.au"
+      ]
     },
     {
       "protocol": "ms-excel",
-      "allowed_origins": ["https://workspace.example.gov.au"]
+      "allowed_origins": [
+        "https://workspaces.grdc.com.au",
+        "https://workspaces.test.grdc.com.au",
+        "https://workspaces.dev.grdc.com.au"
+      ]
     },
     {
       "protocol": "ms-powerpoint",
-      "allowed_origins": ["https://workspace.example.gov.au"]
+      "allowed_origins": [
+        "https://workspaces.grdc.com.au",
+        "https://workspaces.test.grdc.com.au",
+        "https://workspaces.dev.grdc.com.au"
+      ]
     },
     {
       "protocol": "ms-visio",
-      "allowed_origins": ["https://workspace.example.gov.au"]
+      "allowed_origins": [
+        "https://workspaces.grdc.com.au",
+        "https://workspaces.test.grdc.com.au",
+        "https://workspaces.dev.grdc.com.au"
+      ]
     }
   ]
 }
