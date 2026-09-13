@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "properties": {
+    "enabled": {
+      "title": "Enable SharePoint Office Launcher",
+      "description": "Globally enable or disable interception.",
+      "type": "boolean",
+      "default": true
+    },
+    "allowedOrigins": {
+      "title": "Allowed SharePoint origins",
+      "description": "Exact HTTPS origins the extension may intercept.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "allowedPathPrefixes": {
+      "title": "Allowed URL path prefixes",
+      "description": "Only SharePoint URLs under these path prefixes are eligible.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "openMode": {
+      "title": "Office open mode",
+      "description": "Use edit or view Office URI commands.",
+      "type": "string",
+      "enum": ["edit", "view"],
+      "default": "edit"
+    },
+    "resolveDocShareLinks": {
+      "title": "Attempt Doc.aspx GUID resolution",
+      "description": "Attempt a same-origin SharePoint REST lookup for sourcedoc links before allowing normal behavior.",
+      "type": "boolean",
+      "default": true
+    },
+    "debug": {
+      "title": "Debug logging",
+      "description": "Write diagnostic messages to the extension service worker console.",
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
