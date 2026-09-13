@@ -1,0 +1,12 @@
+{
+  "name": "Workspace SharePoint",
+  "origins": [
+    "https://workspace.example.gov.au"
+  ],
+  "pathPrefixes": [
+    "/"
+  ],
+  "openMode": "edit",
+  "resolveDocShareLinks": true,
+  "debug": false
+}
