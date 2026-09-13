@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "__EXTENSION_NAME__",
+  "version": "0.1.0",
+  "description": "Opens approved SharePoint Office documents directly in Microsoft 365 desktop applications.",
+  "minimum_chrome_version": "120",
+  "permissions": __PERMISSIONS__,
+  "host_permissions": __HOST_PERMISSIONS__,
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "storage": {
+    "managed_schema": "managed_schema.json"
+  },
+  "options_page": "options.html",
+  "content_scripts": __CONTENT_SCRIPTS__,
+  "web_accessible_resources": [
+    {
+      "resources": ["launcher.html", "launcher.js", "runtime-config.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
