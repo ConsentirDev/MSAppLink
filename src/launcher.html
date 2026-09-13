@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Opening document…</title>
+  <style>
+    body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;max-width:680px;margin:64px auto;padding:0 24px;line-height:1.45}
+    .card{border:1px solid #ddd;border-radius:12px;padding:24px}
+    button,a.button{display:inline-block;margin:8px 8px 0 0;padding:10px 16px;border-radius:6px;border:1px solid #777;background:#fff;color:#111;text-decoration:none;cursor:pointer}
+    code{word-break:break-all}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Opening in the desktop app…</h1>
+    <p>If Chrome does not launch Microsoft Office automatically, use the button below.</p>
+    <p><button id="open">Open in desktop app</button><a class="button" id="browser" href="#">Continue in browser</a></p>
+    <details><summary>Document URL</summary><code id="document"></code></details>
+  </div>
+  <script src="launcher.js"></script>
+</body>
+</html>
