@@ -1,0 +1,20 @@
+{
+  "3rdparty": {
+    "extensions": {
+      "<EXTENSION_ID>": {
+        "policy": {
+          "enabled": true,
+          "allowedOrigins": [
+            "https://workspace.example.gov.au"
+          ],
+          "allowedPathPrefixes": [
+            "/sites/workspaces/"
+          ],
+          "openMode": "edit",
+          "resolveDocShareLinks": true,
+          "debug": false
+        }
+      }
+    }
+  }
+}
