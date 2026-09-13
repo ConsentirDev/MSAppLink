@@ -1,0 +1,11 @@
+const q = new URLSearchParams(location.search);
+const target = q.get("target");
+const source = q.get("source");
+const documentUrl = q.get("document");
+const open = document.getElementById("open");
+const browser = document.getElementById("browser");
+const doc = document.getElementById("document");
+if (documentUrl) doc.textContent = documentUrl;
+if (source) browser.href = source;
+open.addEventListener("click", () => { if (target) location.href = target; });
+if (target) setTimeout(() => { location.href = target; }, 100);
