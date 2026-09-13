@@ -1,0 +1,23 @@
+{
+  "ExtensionInstallForcelist": [
+    "<EXTENSION_ID>;<UPDATE_URL>"
+  ],
+  "AutoLaunchProtocolsFromOrigins": [
+    {
+      "protocol": "ms-word",
+      "allowed_origins": ["https://workspace.example.gov.au"]
+    },
+    {
+      "protocol": "ms-excel",
+      "allowed_origins": ["https://workspace.example.gov.au"]
+    },
+    {
+      "protocol": "ms-powerpoint",
+      "allowed_origins": ["https://workspace.example.gov.au"]
+    },
+    {
+      "protocol": "ms-visio",
+      "allowed_origins": ["https://workspace.example.gov.au"]
+    }
+  ]
+}
