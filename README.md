@@ -9,7 +9,7 @@ The target migration removes Office Online Server/WOPI. SharePoint Server can st
 ## Safety model
 
 - HTTPS only.
-- Exact allow-list of SharePoint origins compiled into the extension manifest.
+- Exact allow-list of SharePoint origins compiled into the enterprise extension manifest.
 - Optional path-prefix allow-list at runtime.
 - Office document types only; PDF, ZIP, images and executables are never intercepted.
 - Never guesses a document location from a filename alone.
@@ -18,24 +18,41 @@ The target migration removes Office Online Server/WOPI. SharePoint Server can st
 
 ## Build
 
-1. Copy `config/targets.example.json` to `config/targets.json`.
-2. Replace the example origin and path prefix with the actual SharePoint SE Workspace URL scope.
-3. Run:
+Install Node.js 20+ and run:
 
 ```bash
 npm test
+```
+
+### Local POC / unpacked Chrome extension
+
+For developer-mode testing use **only**:
+
+```bash
 npm run build:dev
 ```
 
-Load `dist/` as an unpacked extension for the first POC, then open the extension **Options** page and enter the real SharePoint origin/path. The dev build intentionally has broad HTTPS host permission so the target can be changed without rebuilding; runtime logic still limits action to the configured origin. It uses `webNavigation` and can race Chrome's normal navigation, so it is only for functional validation.
+Load `dist-dev/` from `chrome://extensions` using **Load unpacked**.
 
-For the managed deployment build, put the real origin/path into `config/targets.json` first. The enterprise manifest is then compiled with only those exact host permissions:
+The development build intentionally does **not** request `webRequestBlocking`. In Manifest V3 that permission is available only to extensions installed by enterprise policy, so Chrome will reject an unpacked MV3 extension that requests it. The dev build therefore uses the `webNavigation` fallback for functional validation.
+
+### Enterprise/policy build
+
+For managed deployment:
 
 ```bash
-npm run build
+npm run build:enterprise
 ```
 
-The enterprise build also requests `webRequest` + `webRequestBlocking`. Chrome retains `webRequestBlocking` for policy-installed Manifest V3 extensions. The extension cancels a recognised top-level document request before asking Chrome to launch the Office protocol.
+This creates `dist-enterprise/` with host permissions restricted to the configured GRDC Workspaces origins. It requests `webRequest` + `webRequestBlocking` so recognised top-level document requests can be cancelled before Office is launched.
+
+**Do not load `dist-enterprise/` with Chrome's Load unpacked button.** `webRequestBlocking` in Manifest V3 is valid only when the extension is installed by enterprise policy/force-installation.
+
+The current configured origins are:
+
+- `https://workspaces.grdc.com.au`
+- `https://workspaces.test.grdc.com.au`
+- `https://workspaces.dev.grdc.com.au`
 
 ## What it recognises
 
@@ -56,7 +73,7 @@ Set `openMode` to `view` to use `ofv` instead of `ofe`.
 
 ## Chrome policy
 
-`policy/chrome-policy.sample.json` contains examples for force installation and `AutoLaunchProtocolsFromOrigins`. Replace placeholders with the final extension ID/update URL and the real SharePoint origin.
+`policy/chrome-policy.sample.json` contains examples for force installation and `AutoLaunchProtocolsFromOrigins`. Replace placeholders with the final extension ID/update URL.
 
 `policy/managed-extension-policy.sample.json` shows the intended extension-managed settings. The exact Intune/Chrome ADMX delivery shape should be aligned with how the environment currently deploys Chrome third-party extension policy.
 
@@ -70,7 +87,3 @@ Set `openMode` to `view` to use `ofv` instead of `ofe`.
 6. A document with no matching desktop Office protocol fails visibly rather than looping.
 7. Chrome policy removes or minimizes the external-protocol confirmation prompt on managed devices.
 8. Disabling the managed `enabled` value immediately returns behavior to native Chrome/SharePoint.
-
-## POC limitation to prove first
-
-The most environment-specific path is native `Doc.aspx?sourcedoc={GUID}` resolution on SharePoint Server. Microsoft documents Office URI schemes, but documentation around `GetFileById` in on-prem CSOM/REST is inconsistent. Treat that resolver as a testable optimization, not a production assumption.
