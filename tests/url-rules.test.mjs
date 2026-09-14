@@ -46,3 +46,20 @@ test("does not guess a path from Doc.aspx file=name only", () => {
   assert.equal(extractDocumentUrl(u, cfg), null);
   assert.equal(isDocAspxShareLink(u, cfg), true);
 });
+
+test("accepts real GRDC TEST direct SharePoint document link and preserves query string", () => {
+  const grdcCfg = {
+    enabled: true,
+    allowedOrigins: [
+      "https://workspaces.grdc.com.au",
+      "https://workspaces.test.grdc.com.au",
+      "https://workspaces.dev.grdc.com.au"
+    ],
+    allowedPathPrefixes: ["/"],
+    openMode: "edit"
+  };
+  const u = "https://workspaces.test.grdc.com.au/sites/procurement-9177490/Shared%20Documents/Gone%20To%20Market/PROC-9177490%20Application%20Planning%20Document%20-%20Not%20for%20Submission.docx?e=4%3A047420abc19b46f3a6d1e3755d541d88";
+  assert.equal(officeProtocolFor(u), "ms-word");
+  assert.equal(extractDocumentUrl(u, grdcCfg), u);
+  assert.equal(buildOfficeUri(u, "edit"), `ms-word:ofe|u|${u}`);
+});
