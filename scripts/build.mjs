@@ -14,6 +14,10 @@ const origins = cfg.origins.map(value => {
 
 const hostPermissions = mode === "dev" ? ["https://*/*"] : origins.map(x => `${x}/*`);
 const matches = mode === "dev" ? ["https://*/*"] : origins.map(x => `${x}/*`);
+
+// IMPORTANT: webRequestBlocking is valid in Manifest V3 only when the extension
+// is installed by enterprise policy. Unpacked/developer-mode MV3 extensions
+// must not request it or Chrome will reject the manifest.
 const permissions = mode === "enterprise"
   ? ["storage", "tabs", "webNavigation", "webRequest", "webRequestBlocking"]
   : ["storage", "tabs", "webNavigation"];
@@ -31,14 +35,17 @@ manifest = manifest
   .replace("__HOST_PERMISSIONS__", JSON.stringify(hostPermissions, null, 2))
   .replace("__CONTENT_SCRIPTS__", JSON.stringify(contentScripts, null, 2));
 
-await rm("dist", { recursive: true, force: true });
-await mkdir("dist/lib", { recursive: true });
+// Keep developer and enterprise artefacts separate so an enterprise manifest
+// cannot accidentally be loaded unpacked during POC testing.
+const outputDir = mode === "dev" ? "dist-dev" : "dist-enterprise";
+await rm(outputDir, { recursive: true, force: true });
+await mkdir(path.join(outputDir, "lib"), { recursive: true });
 for (const file of ["background.js", "doc-resolver.js", "launcher.html", "launcher.js", "options.html", "options.js", "managed_schema.json"]) {
-  await cp(path.join("src", file), path.join("dist", file));
+  await cp(path.join("src", file), path.join(outputDir, file));
 }
-await cp("src/lib/url-rules.js", "dist/lib/url-rules.js");
-await writeFile("dist/manifest.json", manifest);
-await writeFile("dist/runtime-config.json", JSON.stringify({
+await cp("src/lib/url-rules.js", path.join(outputDir, "lib/url-rules.js"));
+await writeFile(path.join(outputDir, "manifest.json"), manifest);
+await writeFile(path.join(outputDir, "runtime-config.json"), JSON.stringify({
   origins,
   pathPrefixes: cfg.pathPrefixes || ["/"],
   openMode: cfg.openMode || "edit",
@@ -46,4 +53,7 @@ await writeFile("dist/runtime-config.json", JSON.stringify({
   debug: cfg.debug ?? false,
   buildMode: mode
 }, null, 2));
-console.log(`Built ${mode} extension for: ${origins.join(", ")}`);
+console.log(`Built ${mode} extension in ${outputDir}/ for: ${origins.join(", ")}`);
+if (mode === "enterprise") {
+  console.log("NOTE: dist-enterprise is for policy/force installation only; Chrome will reject webRequestBlocking if loaded unpacked.");
+}
